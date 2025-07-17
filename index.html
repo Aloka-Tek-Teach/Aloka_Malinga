@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO & Open Graph Meta Tags -->
+    <title>Aloka Malinga - Creative Developer & Tech Enthusiast</title>
+    <meta name="description" content="Personal portfolio of Aloka Malinga, a creative developer and tech enthusiast specializing in modern web and app development.">
+    <meta name="keywords" content="Aloka Malinga, portfolio, web developer, creative developer, tech enthusiast, React, JavaScript, Sri Lanka">
+    <meta name="author" content="Aloka Malinga">
+    
+    <meta property="og:title" content="Aloka Malinga - Creative Developer Portfolio">
+    <meta property="og:description" content="Explore the projects and skills of Aloka Malinga, a developer passionate about building beautiful and functional digital experiences.">
+    <meta property="og:image" content="https://placehold.co/1200x630/020617/9333ea?text=Aloka+Malinga">
+    <meta property="og:url" content="https://your-domain.com">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://placehold.co/32x32/9333ea/ffffff?text=AM" type="image/png">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- AOS (Animate on Scroll) Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #020617; /* slate-950 */
+            color: #e2e8f0; /* slate-200 */
+        }
+
+        /* --- Tech Background Canvas --- */
+        #tech-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Position canvas behind content */
+        }
+
+        /* --- Ensure content is above the canvas --- */
+        main, header, footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- Preloader --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #020617;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out;
+        }
+        .loader {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #4f46e5; /* indigo-600 */
+            border-top-color: #a78bfa; /* violet-400 */
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- Glowing Text & Typing Effect --- */
+        .glowing-text {
+            color: #fff;
+            text-shadow:
+                0 0 7px #fff,
+                0 0 10px #fff,
+                0 0 21px #fff,
+                0 0 42px #8b5cf6, /* violet-500 */
+                0 0 82px #8b5cf6,
+                0 0 92px #8b5cf6,
+                0 0 102px #8b5cf6,
+                0 0 151px #8b5cf6;
+        }
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background-color: #a78bfa;
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        
+        /* --- Glassmorphism Effect --- */
+        .glass-effect {
+            background: rgba(15, 23, 42, 0.6); /* slate-900 with opacity */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* --- Sticky Header & Scroll Spy --- */
+        .nav-link.active {
+            color: #a78bfa; /* violet-400 */
+            font-weight: 600;
+        }
+        
+        /* --- Animated Skill Bars --- */
+        .skill-bar-inner {
+            background: linear-gradient(90deg, #8b5cf6, #6366f1); /* violet-500 to indigo-500 */
+            transition: width 1.5s ease-out;
+        }
+
+        /* --- Project Filtering --- */
+        .filter-btn.active {
+            background-color: #6366f1;
+            color: white;
+        }
+        
+        /* --- Modal Styling --- */
+        #project-modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Preloader -->
+    <div id="preloader">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Tech Background -->
+    <canvas id="tech-background"></canvas>
+
+    <!-- Header & Navigation -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="#home" class="text-3xl font-bold text-white">AM.</a>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-gray-300 hover:text-violet-400 transition-colors duration-300">Home</a>
+                    <a href="#about" class="nav-link text-gray-300 hover:text-violet-400 transition-colors duration-300">About</a>
+                    <a href="#projects" class="nav-link text-gray-300 hover:text-violet-400 transition-colors duration-300">Projects</a>
+                    <a href="#skills" class="nav-link text-gray-300 hover:text-violet-400 transition-colors duration-300">Skills</a>
+                    <a href="#contact" class="nav-link text-gray-300 hover:text-violet-400 transition-colors duration-300">Contact</a>
+                </nav>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-white focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass-effect absolute top-full left-0 w-full">
+             <a href="#home" class="nav-link block py-3 px-6 text-gray-300 hover:text-violet-400 hover:bg-slate-800">Home</a>
+             <a href="#about" class="nav-link block py-3 px-6 text-gray-300 hover:text-violet-400 hover:bg-slate-800">About</a>
+             <a href="#projects" class="nav-link block py-3 px-6 text-gray-300 hover:text-violet-400 hover:bg-slate-800">Projects</a>
+             <a href="#skills" class="nav-link block py-3 px-6 text-gray-300 hover:text-violet-400 hover:bg-slate-800">Skills</a>
+             <a href="#contact" class="nav-link block py-3 px-6 text-gray-300 hover:text-violet-400 hover:bg-slate-800">Contact</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="h-screen flex flex-col items-center justify-center text-center">
+            <div class="px-6 relative z-10" data-aos="fade-up">
+                <h1 class="text-4xl md:text-6xl font-bold text-white mb-4">Aloka Malinga</h1>
+                <h2 class="text-2xl md:text-4xl lg:text-5xl font-semibold glowing-text mb-8">
+                    <span id="typing-text"></span><span class="typing-cursor"></span>
+                </h2>
+                <a href="#projects" class="bg-violet-600 hover:bg-violet-700 text-white font-semibold py-3 px-8 rounded-full text-lg transition-all duration-300 transform hover:scale-105">
+                    Explore My Work
+                </a>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 lg:py-32">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-12 text-center text-white" data-aos="fade-up">About Me</h2>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div data-aos="fade-right">
+                        <img src="https://placehold.co/600x600/1e293b/ffffff?text=Aloka" alt="A portrait of Aloka Malinga" class="rounded-lg shadow-2xl w-full max-w-md mx-auto">
+                    </div>
+                    <div data-aos="fade-left" data-aos-delay="200">
+                        <p class="text-slate-300 mb-6 text-lg">
+                            I'm a passionate and results-driven developer based in Yakkala, Sri Lanka. With a strong foundation in both front-end and back-end technologies, I specialize in crafting elegant, high-performance web applications that provide exceptional user experiences.
+                        </p>
+                        <p class="text-slate-300 text-lg">
+                            My goal is to leverage technology to solve real-world problems and build digital products that are not only functional but also beautiful and intuitive. I'm a lifelong learner, always excited to explore new tools and frameworks.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 lg:py-32 bg-slate-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-4 text-center text-white" data-aos="fade-up">My Creations</h2>
+                <div class="flex justify-center space-x-2 md:space-x-4 mb-12" data-aos="fade-up" data-aos-delay="100">
+                    <button class="filter-btn active px-4 py-2 rounded-full font-semibold transition" data-filter="all">All</button>
+                    <button class="filter-btn px-4 py-2 rounded-full font-semibold transition" data-filter="web">Web</button>
+                    <button class="filter-btn px-4 py-2 rounded-full font-semibold transition" data-filter="app">App</button>
+                    <button class="filter-btn px-4 py-2 rounded-full font-semibold transition" data-filter="design">Design</button>
+                </div>
+                <div id="project-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Project Cards will be injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-20 lg:py-32">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-12 text-center text-white" data-aos="fade-up">Technical Skills</h2>
+                <div id="skills-container" class="max-w-4xl mx-auto grid md:grid-cols-2 gap-x-12 gap-y-8">
+                    <!-- Skills will be injected by JS -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 lg:py-32 bg-slate-900/50">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl lg:text-5xl font-bold mb-12 text-center text-white" data-aos="fade-up">Get In Touch</h2>
+                <div class="grid lg:grid-cols-2 gap-12">
+                    <form id="contact-form" class="space-y-6" data-aos="fade-right">
+                        <input type="text" name="name" placeholder="Your Name" required class="w-full p-3 bg-slate-800 rounded-lg border border-slate-700 focus:ring-2 focus:ring-violet-500 focus:outline-none">
+                        <input type="email" name="email" placeholder="Your Email" required class="w-full p-3 bg-slate-800 rounded-lg border border-slate-700 focus:ring-2 focus:ring-violet-500 focus:outline-none">
+                        <textarea name="message" placeholder="Your Message" rows="5" required class="w-full p-3 bg-slate-800 rounded-lg border border-slate-700 focus:ring-2 focus:ring-violet-500 focus:outline-none"></textarea>
+                        <button type="submit" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300">Send Message</button>
+                        <p id="form-status" class="text-center mt-4"></p>
+                    </form>
+                    <div class="h-96 lg:h-full rounded-lg overflow-hidden" data-aos="fade-left" data-aos-delay="200">
+                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31671.18959451152!2d80.09199345!3d7.0932029499999995!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae2fc5b2e811163%3A0x7394c50822615003!2sYakkala!5e0!3m2!1sen!2slk!4v1721210049381!5m2!1sen!2slk" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-slate-950/50">
+        <div class="container mx-auto px-6 text-center text-slate-400">
+            <div class="flex justify-center space-x-6 mb-4">
+                <a href="#" class="hover:text-violet-400 transition"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+                <a href="#" class="hover:text-violet-400 transition"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+                <a href="#" class="hover:text-violet-400 transition"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
+            </div>
+            <p>&copy; <span id="copyright-year"></span> Aloka Malinga. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Project Modal -->
+    <div id="project-modal" class="fixed inset-0 bg-black bg-opacity-80 z-[60] flex items-center justify-center p-4 opacity-0 invisible">
+        <div id="modal-content" class="glass-effect rounded-lg max-w-3xl w-full max-h-[90vh] overflow-y-auto relative" data-aos="zoom-in">
+            <button id="modal-close-btn" class="absolute top-4 right-4 text-white text-3xl">&times;</button>
+            <img id="modal-image" src="" alt="Project Image" class="w-full h-64 object-cover rounded-t-lg">
+            <div class="p-6 md:p-8">
+                <h3 id="modal-title" class="text-3xl font-bold mb-2"></h3>
+                <div id="modal-tags" class="flex flex-wrap gap-2 mb-4"></div>
+                <p id="modal-description" class="text-slate-300"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Data ---
+            const projectsData = [
+                { id: 1, title: 'E-commerce Platform', category: 'web', image: 'https://placehold.co/600x400/6366f1/ffffff?text=E-commerce', tags: ['React', 'Node.js', 'Stripe'], description: 'A full-featured e-commerce website with product listings, shopping cart, and secure payment integration using Stripe. Built with a responsive design for a seamless experience on all devices.' },
+                { id: 2, title: 'Task Management App', category: 'app', image: 'https://placehold.co/600x400/8b5cf6/ffffff?text=Task+App', tags: ['React Native', 'Firebase'], description: 'A cross-platform mobile app for managing tasks and projects. Features real-time data synchronization with Firebase Firestore and user authentication.' },
+                { id: 3, title: 'Brand Identity Design', category: 'design', image: 'https://placehold.co/600x400/ec4899/ffffff?text=Branding', tags: ['Figma', 'Illustrator'], description: 'Complete brand identity design for a tech startup, including logo, color palette, typography, and marketing materials. Focused on creating a modern and memorable brand image.' },
+                { id: 4, title: 'Data Analytics Dashboard', category: 'web', image: 'https://placehold.co/600x400/22c55e/ffffff?text=Dashboard', tags: ['Vue.js', 'D3.js'], description: 'An interactive dashboard for visualizing complex datasets. Utilizes D3.js for dynamic charts and graphs, providing insightful data analytics.' },
+                { id: 5, title: 'Fitness Tracker App', category: 'app', image: 'https://placehold.co/600x400/f97316/ffffff?text=Fitness+App', tags: ['Flutter', 'Google Fit API'], description: 'A mobile application to track fitness activities, set goals, and monitor progress. Integrates with Google Fit API to sync health data.' },
+                { id: 6, title: 'Portfolio Website', category: 'web', image: 'https://placehold.co/600x400/0ea5e9/ffffff?text=Portfolio', tags: ['HTML5', 'Tailwind CSS', 'JS'], description: 'A personal portfolio website to showcase projects and skills, featuring a clean design, smooth animations, and a fully responsive layout.' },
+            ];
+
+            const skillsData = [
+                { name: 'JavaScript (ES6+)', level: 95 },
+                { name: 'React & React Native', level: 90 },
+                { name: 'Node.js & Express', level: 85 },
+                { name: 'HTML5 & CSS3', level: 98 },
+                { name: 'Tailwind CSS', level: 95 },
+                { name: 'Databases (SQL & NoSQL)', level: 80 },
+                { name: 'UI/UX Design (Figma)', level: 88 },
+                { name: 'Version Control (Git)', level: 92 },
+            ];
+
+            // --- Preloader ---
+            const preloader = document.getElementById('preloader');
+            window.addEventListener('load', () => {
+                preloader.style.opacity = '0';
+                setTimeout(() => preloader.style.display = 'none', 500);
+            });
+
+            // --- Header Scroll Effect ---
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('glass-effect', 'shadow-lg');
+                } else {
+                    header.classList.remove('glass-effect', 'shadow-lg');
+                }
+            });
+            
+            // --- Typing Animation ---
+            const typingText = document.getElementById('typing-text');
+            const phrases = ["Creative Developer", "Tech Enthusiast", "Problem Solver"];
+            let phraseIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function type() {
+                const currentPhrase = phrases[phraseIndex];
+                if (isDeleting) {
+                    typingText.textContent = currentPhrase.substring(0, charIndex--);
+                } else {
+                    typingText.textContent = currentPhrase.substring(0, charIndex++);
+                }
+
+                let typeSpeed = isDeleting ? 75 : 150;
+
+                if (!isDeleting && charIndex === currentPhrase.length) {
+                    typeSpeed = 2000;
+                    isDeleting = true;
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    typeSpeed = 500;
+                }
+                setTimeout(type, typeSpeed);
+            }
+            type();
+
+            // --- Mobile Menu ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+            });
+
+            // --- Scroll Spy ---
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            // --- AOS Initialization ---
+            AOS.init({
+                duration: 800,
+                once: false, // Set to false to animate on scroll up and down
+                offset: 100,
+            });
+
+            // --- Projects Section Logic ---
+            const projectGrid = document.getElementById('project-grid');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            
+            function renderProjects(filter = 'all') {
+                projectGrid.innerHTML = '';
+                const filteredProjects = projectsData.filter(p => filter === 'all' || p.category === filter);
+                
+                filteredProjects.forEach(project => {
+                    const projectCard = document.createElement('div');
+                    projectCard.className = 'project-card glass-effect rounded-lg overflow-hidden cursor-pointer';
+                    projectCard.dataset.id = project.id;
+                    projectCard.dataset.aos = 'zoom-in-up';
+                    projectCard.innerHTML = `
+                        <div class="relative overflow-hidden">
+                           <img src="${project.image}" alt="${project.title}" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-2xl font-bold mb-2 text-white">${project.title}</h3>
+                            <p class="text-violet-400 font-semibold capitalize">${project.category}</p>
+                        </div>
+                    `;
+                    projectGrid.appendChild(projectCard);
+                });
+
+                // Re-initialize tilt effect for new cards
+                VanillaTilt.init(document.querySelectorAll(".project-card"), {
+                    max: 15, speed: 400, glare: true, "max-glare": 0.2
+                });
+            }
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderProjects(btn.dataset.filter);
+                });
+            });
+            
+            // --- Project Modal Logic ---
+            const modal = document.getElementById('project-modal');
+            const modalCloseBtn = document.getElementById('modal-close-btn');
+            
+            projectGrid.addEventListener('click', (e) => {
+                const card = e.target.closest('.project-card');
+                if (card) {
+                    const projectId = parseInt(card.dataset.id);
+                    const project = projectsData.find(p => p.id === projectId);
+                    
+                    document.getElementById('modal-image').src = project.image;
+                    document.getElementById('modal-title').textContent = project.title;
+                    document.getElementById('modal-description').textContent = project.description;
+                    
+                    const tagsContainer = document.getElementById('modal-tags');
+                    tagsContainer.innerHTML = '';
+                    project.tags.forEach(tag => {
+                        tagsContainer.innerHTML += `<span class="bg-slate-700 text-violet-300 text-sm font-medium mr-2 px-2.5 py-0.5 rounded">${tag}</span>`;
+                    });
+
+                    modal.classList.remove('invisible', 'opacity-0');
+                }
+            });
+            
+            modalCloseBtn.addEventListener('click', () => modal.classList.add('invisible', 'opacity-0'));
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('invisible', 'opacity-0');
+                }
+            });
+
+            // --- Skills Section Logic ---
+            const skillsContainer = document.getElementById('skills-container');
+            skillsData.forEach(skill => {
+                const skillElement = document.createElement('div');
+                skillElement.className = 'skill-item';
+                skillElement.dataset.aos = 'fade-up';
+                skillElement.innerHTML = `
+                    <div class="flex justify-between mb-1">
+                        <span class="text-base font-medium text-slate-200">${skill.name}</span>
+                        <span class="text-sm font-medium text-slate-300">${skill.level}%</span>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-2.5">
+                        <div class="skill-bar-inner h-2.5 rounded-full" style="width: 0%;" data-level="${skill.level}"></div>
+                    </div>
+                `;
+                skillsContainer.appendChild(skillElement);
+            });
+
+            const skillsObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const skillBars = entry.target.querySelectorAll('.skill-bar-inner');
+                        skillBars.forEach(bar => {
+                            bar.style.width = bar.dataset.level + '%';
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+            skillsObserver.observe(document.getElementById('skills'));
+
+            // --- Contact Form ---
+            const contactForm = document.getElementById('contact-form');
+            const formStatus = document.getElementById('form-status');
+            contactForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                formStatus.textContent = 'Sending...';
+                setTimeout(() => {
+                    formStatus.textContent = 'Message sent successfully!';
+                    formStatus.style.color = '#22c55e';
+                    contactForm.reset();
+                }, 1500);
+            });
+
+            // --- Footer Copyright Year ---
+            document.getElementById('copyright-year').textContent = new Date().getFullYear();
+
+            // --- Interactive Tech Background using Three.js ---
+            function initTechBackground() {
+                const canvas = document.getElementById('tech-background');
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+                const particlesCount = 5000;
+                const positions = new Float32Array(particlesCount * 3);
+                for (let i = 0; i < particlesCount * 3; i++) {
+                    positions[i] = (Math.random() - 0.5) * 10;
+                }
+                const particlesGeometry = new THREE.BufferGeometry();
+                particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                const particlesMaterial = new THREE.PointsMaterial({
+                    color: 0x8b5cf6, // violet-500
+                    size: 0.02,
+                    blending: THREE.AdditiveBlending,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+                scene.add(particles);
+
+                camera.position.z = 2;
+
+                const mouse = new THREE.Vector2();
+                window.addEventListener('mousemove', (event) => {
+                    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                });
+
+                window.addEventListener('resize', () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+                });
+
+                const clock = new THREE.Clock();
+                const animate = () => {
+                    const elapsedTime = clock.getElapsedTime();
+                    particles.rotation.y = elapsedTime * 0.05;
+                    particles.rotation.x = -mouse.y * 0.2;
+                    particles.rotation.z = -mouse.x * 0.2;
+                    renderer.render(scene, camera);
+                    window.requestAnimationFrame(animate);
+                };
+                animate();
+            }
+
+            // Initial Renders
+            initTechBackground();
+            renderProjects();
+        });
+    </script>
+</body>
+</html>
